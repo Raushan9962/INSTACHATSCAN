@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Minus, ShoppingCart, Heart, Share2 } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, ShoppingCart, Share2 } from 'lucide-react';
 import { Button } from '../Components/ui/button';
 import { Badge } from '../Components/ui/badge';
 import { Card, CardContent } from '../components/ui/card';
@@ -21,84 +21,6 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
 
-  // Mock product data for when API is unavailable
-  const mockProducts = {
-    'mock-1': {
-      _id: 'mock-1',
-      title: 'Wireless Bluetooth Headphones',
-      description: 'Premium wireless headphones with active noise cancellation, 30-hour battery life, and superior sound quality. Perfect for music, calls, and gaming.',
-      price: 2499,
-      mrp: 3999,
-      stock: 15,
-      category: 'Electronics',
-      sku: 'WBH-001',
-      barcode: '1234567890123',
-      images: [
-        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600',
-        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600',
-        'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600'
-      ]
-    },
-    'mock-2': {
-      _id: 'mock-2',
-      title: 'Smartphone Case Premium',
-      description: 'Durable smartphone case made with premium materials. Provides excellent protection against drops and scratches while maintaining a sleek design.',
-      price: 599,
-      mrp: 999,
-      stock: 8,
-      category: 'Electronics',
-      sku: 'SCP-002',
-      barcode: '2345678901234',
-      images: [
-        'https://images.unsplash.com/photo-1601972602237-8c79241e468b?w=600',
-        'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600'
-      ]
-    },
-    'mock-3': {
-      _id: 'mock-3',
-      title: 'USB-C Fast Charger',
-      description: 'High-speed USB-C charger with intelligent charging technology. Compatible with most modern devices and provides fast, safe charging.',
-      price: 899,
-      mrp: 1299,
-      stock: 0,
-      category: 'Electronics',
-      sku: 'UCC-003',
-      barcode: '3456789012345',
-      images: [
-        'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600'
-      ]
-    },
-    'mock-4': {
-      _id: 'mock-4',
-      title: 'Wireless Mouse',
-      description: 'Ergonomic wireless mouse with precision tracking and long battery life. Perfect for work and gaming with customizable DPI settings.',
-      price: 1299,
-      mrp: 1899,
-      stock: 22,
-      category: 'Electronics',
-      sku: 'WM-004',
-      barcode: '4567890123456',
-      images: [
-        'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600',
-        'https://images.unsplash.com/photo-1563297007-0686b7003af7?w=600'
-      ]
-    },
-    'mock-5': {
-      _id: 'mock-5',
-      title: 'Cotton T-Shirt',
-      description: 'Comfortable 100% cotton t-shirt available in multiple colors. Soft, breathable fabric perfect for everyday wear.',
-      price: 799,
-      mrp: 1299,
-      stock: 30,
-      category: 'Clothing',
-      sku: 'CTS-005',
-      barcode: '5678901234567',
-      images: [
-        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600'
-      ]
-    }
-  };
-
   useEffect(() => {
     fetchProduct();
   }, [id]);
@@ -110,16 +32,8 @@ const ProductDetail = () => {
       setProduct(response.data.product);
     } catch (error) {
       console.error('Failed to fetch product:', error);
-      
-      // Check if we have mock data for this product
-      if (mockProducts[id]) {
-        setProduct(mockProducts[id]);
-      } else {
-        // If no mock data exists for this ID, redirect to products page
-        toast.error('Product not found');
-        navigate('/products');
-        return;
-      }
+      toast.error('Product not found');
+      navigate('/products');
     } finally {
       setLoading(false);
     }
@@ -176,7 +90,6 @@ const ProductDetail = () => {
         console.error('Error sharing:', error);
       }
     } else {
-      // Fallback to copying URL
       navigator.clipboard.writeText(window.location.href);
       toast.success('Product URL copied to clipboard');
     }
